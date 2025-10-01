@@ -4,7 +4,10 @@ let currentRoomCode = null;
 let players = [];
 
 function connect() {
-    socket = io();
+    socket = io({
+        transports: ['polling'],
+        upgrade: false
+    });
     
     socket.on('connect', () => {
         console.log('Conectado al servidor');

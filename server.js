@@ -9,7 +9,9 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
-  }
+  },
+  transports: ['polling'],
+  allowEIO3: true
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
