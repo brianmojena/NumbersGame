@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Números - Adivina el Código</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1 class="game-title">🎯 Adivina el Número</h1>
+            <div class="room-info" id="roomInfo" style="display: none;">
+                <span class="room-code">Sala: <strong id="roomCodeDisplay"></strong></span>
+            </div>
+        </div>
+        <div class="players-list" id="playersList"></div>
+    </nav>
+
+    <main class="container">
+        <!-- Pantalla de inicio -->
+        <div id="startScreen" class="screen active">
+            <div class="card welcome-card">
+                <h2>Bienvenido al Juego de Números</h2>
+                <p>Cada jugador elige un número de 4 dígitos sin repetir. Los demás deben adivinarlo.</p>
+                
+                <div class="input-group">
+                    <input type="text" id="playerName" placeholder="Tu nombre" maxlength="20">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="createRoom()">Crear Sala</button>
+                    <button class="btn btn-secondary" onclick="showJoinRoom()">Unirse a Sala</button>
+                </div>
+
+                <div id="joinRoomSection" style="display: none; margin-top: 20px;">
+                    <div class="input-group">
+                        <input type="text" id="roomCodeInput" placeholder="Código de sala" maxlength="6">
+                    </div>
+                    <button class="btn btn-primary" onclick="joinRoom()">Unirse</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla del juego -->
+        <div id="gameScreen" class="screen">
+            <div class="game-container">
+                <!-- Panel de tu número secreto -->
+                <div class="card">
+                    <h3>Tu Número Secreto</h3>
+                    <div id="numberSetSection">
+                        <p>Elige un número de 4 dígitos sin repetir (0-9)</p>
+                        <div class="input-group">
+                            <input type="text" id="secretNumber" placeholder="Ej: 1234" maxlength="4" pattern="[0-9]{4}">
+                        </div>
+                        <button class="btn btn-primary" onclick="setSecretNumber()">Establecer Número</button>
+                    </div>
+                    <div id="numberConfirmed" style="display: none;">
+                        <p class="success-message">✓ Tu número secreto ha sido establecido</p>
+                        <p class="info-text">Los demás jugadores intentarán adivinarlo</p>
+                    </div>
+                </div>
+
+                <!-- Panel de adivinanzas -->
+                <div class="card">
+                    <h3>Adivina los Números</h3>
+                    <div id="guessSection">
+                        <div class="input-group">
+                            <select id="targetPlayer" class="select-input">
+                                <option value="">Selecciona un jugador</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="guessNumber" placeholder="Tu intento (4 dígitos)" maxlength="4" pattern="[0-9]{4}">
+                        </div>
+                        <button class="btn btn-primary" onclick="makeGuess()">Adivinar</button>
+                        <div class="hint-legend">
+                            <p><strong>🎯 Bulls:</strong> Dígito correcto en posición correcta</p>
+                            <p><strong>🐮 Cows:</strong> Dígito correcto en posición incorrecta</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historial de intentos -->
+                <div class="card full-width">
+                    <h3>Historial de Intentos</h3>
+                    <div id="guessHistory" class="guess-history"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de victoria -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 ¡Victoria!</h2>
+            <p id="winMessage"></p>
+            <button class="btn btn-primary" onclick="closeWinModal()">Continuar Jugando</button>
+        </div>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notification" class="notification"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
